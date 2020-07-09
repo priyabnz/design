@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./style1.css">
+</head>
+<body>
+    <header>
+        <!-- <div class="logo-container">
+            <img src="" alt="">
+            <h4 class="logo">Three Dots</h4>
+        </div> -->
+        <div class="hamburger">
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
+        </div>
+        <nav>
+            <ul class="nav-links">
+                <li ><a href="index1.html" class="nav-link">Home</a></li>
+                <li><a href="Javascript:;" class="nav-link">About</a></li>
+                <li class="active"><a href="form.html" class="nav-link">Create Form</a></li>
+            </ul>
+        </nav>
+        <!-- <div class="cart">
+            <p>Cart</p>
+        </div> -->
+    </header>
+    <!-- http://127.0.0.1:5500/form.html -->
+       <main>
+        <section class="form-wrapper">
+        <div class="form-info">
+        <div class="error_msg">
+            <h1>Create User Form</h1>
+            <p style="margin-top: 10px;">Enter Your Personal details and create your account !</p>
+        </div>  
+        </div>
+        <form class="forms" id="my-form">
+            <div class="form">
+                <input type="text" " onkeypress="myFunction(event)" value="" name="first_name" id="first_name" autocomplete="off" >
+                <label for="first_name" class="label-name">
+                    <span class="content-name">Name</span>
+                </label>
+            </div>
+            <div class="form">
+                <input type="email" name="Email" id="email" autocomplete="off" >
+                <label for="Email" class="label-name">
+                    <span class="content-name">Email</span>
+                </label>
+            </div>
+            <div class="form">
+                <input type="Number" name="Number" id="mobile_number"  autocomplete="off" >
+                <label for="Number" class="label-name">
+                    <span class="content-name">Mobile No.</span>
+                </label>
+            </div>
+            <div class="form">
+                <input type="password" name="password" id="password" autocomplete="off" >
+                <label for="password" class="label-name">
+                    <span class="content-name">Password</span>
+                </label>
+            </div>
+            <div class="form">
+                <input type="password" name="confirmpassword" id="confirmPassword" autocomplete="off" >
+                <label for="confirmpassword" class="label-name">
+                    <span class="content-name">Confirm Password</span>
+                </label>
+            </div>
+          <button id="button">Submit</button>
+          </form>
+        </section>
+       </main>
+ 
+    <script src="./app.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+
+    <script>
+       $(document).ready(function() {
+        $("#button").attr("disabled","disabled");
+          $("input").change(function(e){
+            checkInputs(e);
+        });
+        
+        function checkInputs(e) {
+            var first_name = $('#first_name').val();
+            var email = $('#email').val();
+            var mobile_number = $('#mobile_number').val();
+            var password = $('#password').val();
+            var confirmPassword = $('#confirmPassword').val();
+            
+            var first_name_error = true;
+            var email_error = true;
+            var mobile_number_error = true;
+            var password_error = true;
+            var confirmPassword_error = true;
+
+            $('.form').removeClass('error');
+            $('.error_msg').html(' ');
+
+       
+            if (first_name.length < 1) {
+                const formControl = $('#first_name').parent();
+                formControl.addClass('error');
+                first_name_error = true;
+                $(".error_msg").append("<p>Name Field is required !</p>");
+            }else{
+                first_name_error = false;
+
+                
+            }
+
+             if(mobile_number.length < 10){
+                const formControl = $('#mobile_number').parent();
+                formControl.addClass('error');
+                mobile_number_error=true;
+                $(".error_msg").append("<p>Mobile Number Field is required ! </p>");
+             }else{
+                mobile_number_error=false;
+             }
+
+            if (email.length < 1) {
+                 const formControl = $('#email').parent();
+                    formControl.addClass('error');
+                    email_error = true;
+                    $(".error_msg").append("<p> Email Field is required ! </p>");
+             }
+             else {
+                    var regEx =/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                    var validEmail = regEx.test(email);
+                    if (!validEmail) {
+                        const formControl = $('#email').parent();
+                        formControl.addClass('error');
+                        email_error = true;
+                        $(".error_msg").append("<p> Email Should be valid ! </p>");
+                    }else{
+                        email_error = false;
+                    }
+                }
+            if (password.length < 8) {
+                const formControl = $('#password').parent();
+                    formControl.addClass('error');
+                    password_error= true;
+                    $(".error_msg").append("<p> Password length should be greater than 8 ! </p>");
+            }else{
+                password_error = false;
+            }
+
+            if(confirmPassword.length < 8) {
+                const formControl = $('#confirmPassword').parent();
+                    formControl.addClass('error');
+                    confirmPassword_error = true;
+                    $(".error_msg").append("<p> Confirm Password length should be greater than 8 ! </p>");
+            } else if(password !== confirmPassword) {
+                const formControl = $('#confirmPassword').parent();
+                    formControl.addClass('error');
+                    confirmPassword_error = true;
+                    $(".error_msg").append("<p> Confirm Password & Password should match </p>");
+            }else{
+                confirmPassword_error = false;
+            }
+
+            if( first_name_error == false && email_error ==false && mobile_number_error ==false && password_error ==false && confirmPassword_error == false ){
+                $("#button").removeAttr("disabled");
+            }
+         };
+        });
+        
+        $('#my-form').submit(function(e) {
+             e.preventDefault();
+             localStorage.setItem('id' ,e);
+             swal('Your message has been received !');
+    
+        });
+
+        function myFunction(e){
+            var inputValue = e.charCode;
+            if(!((inputValue > 64 && inputValue < 91) || (inputValue > 96 && inputValue < 123)||(inputValue==32) || (inputValue==0))){
+                e.preventDefault();
+            }
+        }
+    </script>
+</body>
+</html>
